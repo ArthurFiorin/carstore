@@ -1,6 +1,8 @@
 package br.com.carstore.controller;
 
+import br.com.carstore.dto.CarDTO;
 import br.com.carstore.model.Car;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +14,7 @@ public class indexController {
      return "<h1>MadaFuckkkk</h1>";
     }
 
-    @GetMapping("/car")
+    @GetMapping("/api/car")
     public ResponseEntity<Car> home(){
 
         Car car = new Car();
@@ -23,7 +25,7 @@ public class indexController {
     }
 
     @PostMapping("/api/create-car")
-    public ResponseEntity<Car> createCar(@RequestBody Car car){
+    public ResponseEntity<CarDTO> createCar(@Valid @RequestBody CarDTO car){
 
         System.out.println("Car name: " + car.getName());
         System.out.println("Car color: " + car.getColor());

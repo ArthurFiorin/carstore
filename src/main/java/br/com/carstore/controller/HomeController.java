@@ -1,9 +1,11 @@
 package br.com.carstore.controller;
 
-
-import br.com.carstore.model.Car;
-import org.springframework.http.ResponseEntity;
+import br.com.carstore.dto.CarDTO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -11,12 +13,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class HomeController {
 
     @PostMapping("/create-car")
-    public ResponseEntity<Car> createCar(@ModelAttribute Car car){
+    public String createCar(@Valid @ModelAttribute("carDTO") CarDTO car,
+                            BindingResult result,
+                            Model model) {
 
-        System.out.println("Car name: " + car.getName());
-        System.out.println("Car color: " + car.getColor());
+        if (result.hasErrors()) {
+            return "index"; // volta pro formulário
+        }
 
-        return ResponseEntity.ok(car);
+        // aqui você chamaria o service/repository para salvar no banco
+        return "redirect:/dashboard";
+    }
 
+    @GetMapping("/index")
+    public String index(Model model) {
+        model.addAttribute("carDTO", new CarDTO()); // passa um objeto vazio para o form
+        return "index";
     }
 }
